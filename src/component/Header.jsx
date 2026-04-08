@@ -13,7 +13,8 @@ const Header = () => {
         try {
             const data = await fetch(`https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}`)
             const result = await data.json()
-            console.log(result)
+            // console.log(result)
+            setMovies(result)
         } catch (error) {
             console.log(error);
             
@@ -39,7 +40,7 @@ const Header = () => {
       </div>
     </div>
     </header>
-    <MoviesCard />
+    <MoviesCard data={movies} img={IMG_PATH} />
     </>
   )
 }
