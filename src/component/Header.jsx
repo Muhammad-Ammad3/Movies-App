@@ -14,7 +14,7 @@ const Header = () => {
             const data = await fetch(`https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}`)
             const result = await data.json()
             // console.log(result)
-            setMovies(result)
+            setMovies(result.results)
         } catch (error) {
             console.log(error);
             
