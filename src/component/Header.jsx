@@ -8,6 +8,7 @@ const IMG_PATH = " https://image.tmdb.org/t/p/w1280";
 const Header = () => {
 
     const [movies, setMovies] = useState([])
+    const [input, setInput] = useState("")
 
     const MoviesApp = async () => {
         try {
@@ -20,9 +21,24 @@ const Header = () => {
             
         }
     }
+    const SearchMovie = async () => {
+        try {
+            const data = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${input}`)
+            const result = await data.json()
+            // console.log(result)
+            setMovies(result.results)
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
     useEffect(() => {
-        MoviesApp()
-    }, [])
+        if(input !== ""){
+            SearchMovie()
+        }else{
+            MoviesApp()
+        }
+    }, [input])
 
   return (<>
     <header>
@@ -34,7 +50,8 @@ const Header = () => {
         </div>
         <div className='w-1/2'>
             <form action="">
-                <input type="text" name="" id="" placeholder='Search Movies...' className='px-5 py-3 border rounded text-gray-900 w-full outline-none bg-white' />
+                <input type="text" name="" id="" placeholder='Search Movies...' className='px-5 py-3 border rounded text-gray-900 w-full outline-none bg-white' value={input} 
+                onChange={(e) => setInput(e.target.value)} />
             </form>
         </div>
       </div>
