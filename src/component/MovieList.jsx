@@ -1,30 +1,49 @@
 import React, { useState } from "react";
-import Model from "./Model";
+import Modal from "./Modal";
 
 const MovieList = ({ data, img }) => {
-  const [selectedMovies, setSelectedMovies] = useState();
-  const handleMoviesClick = (movies) => {
-    setSelectedMovies(movies);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+
+  const handleMovieClick = (movie) => {
+    setSelectedMovie(movie);
   };
 
+  if (!data) return null;
+
   return (
-    <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-12">
-      {data.map((movies) => {
-        return (
-          <div
-            className="card bg-white border border-gray-200 rounded-lg shadow shadow-white hover:scale-105 overflow-hidden cursor-pointer transition easy-in-out delay-50"
-            key={data.id}
-            onClick={() => handleMoviesClick(movies)}
-          >
-            <img src={`${img + movies.poster_path}`} alt="" />
-            <div className="flex justify-between p-4 items-center">
-              <h3 className="font-semibold">{movies.title}</h3>
-              <p className="bg-orange p-2 rounded">{movies.vote_average}</p>
-            </div>
+    <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-6">
+      
+      {data.map((movie) => (
+        <div
+          key={movie.id}
+          onClick={() => handleMovieClick(movie)}
+          className="bg-slate-900 rounded-xl overflow-hidden shadow-lg cursor-pointer transform hover:scale-105 hover:shadow-2xl transition duration-300"
+        >
+          <img
+            src={`${img}${movie.poster_path}`}
+            alt={movie.title}
+            className="w-full h-72 object-cover"
+          />
+
+          <div className="p-4 flex justify-between items-center">
+            <h3 className="text-white text-sm font-semibold truncate w-32">
+              {movie.title}
+            </h3>
+
+            <span className="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded">
+              ⭐ {movie.vote_average?.toFixed(1)}
+            </span>
           </div>
-        );
-      })}
-      {selectedMovies && <Model data={selectedMovies} img={img} onClose={() => setSelectedMovies(null)} />}
+        </div>
+      ))}
+
+      {selectedMovie && (
+        <Modal
+          data={selectedMovie}
+          img={img}
+          onClose={() => setSelectedMovie(null)}
+        />
+      )}
     </div>
   );
 };
